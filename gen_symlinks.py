@@ -2,7 +2,7 @@ import os
 
 scripts = {
         "toolbox-update": "../toolbox/update.sh",
-        "toolbox-first-run": "../toolbox/first-run.sh"
+        "toolbox-first-run": "../toolbox/first-run.sh",
 }
 
 if __name__ == "__main__":
