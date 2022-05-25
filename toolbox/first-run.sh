@@ -8,7 +8,7 @@ toolbox run -c $1 sudo dnf upgrade -y
 
 echo ""
 echo "Install Basic Packages"
-toolbox run -c $1 sudo dnf install fish starship exa direnv -y
+toolbox run -c $1 sudo dnf install fish exa direnv -y
 
 SHELL=/bin/fish toolbox enter -c $1
 
