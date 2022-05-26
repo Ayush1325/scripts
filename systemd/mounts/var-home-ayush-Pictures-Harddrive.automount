@@ -1,0 +1,8 @@
+[Unit]
+Description=Hardrive Pictures Automount
+
+[Automount]
+Where=/var/home/ayush/Pictures/Harddrive
+
+[Install]
+WantedBy=multi-user.target

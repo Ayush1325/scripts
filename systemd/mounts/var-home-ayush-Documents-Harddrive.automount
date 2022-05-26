@@ -1,0 +1,8 @@
+[Unit]
+Description=Hardrive Documents-Harddrive Automount
+
+[Automount]
+Where=/var/home/ayush/Documents/Harddrive
+
+[Install]
+WantedBy=multi-user.target

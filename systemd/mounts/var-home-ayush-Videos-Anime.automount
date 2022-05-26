@@ -1,0 +1,8 @@
+[Unit]
+Description=Hardrive Videos-Anime Automount
+
+[Automount]
+Where=/var/home/ayush/Videos/Anime
+
+[Install]
+WantedBy=multi-user.target
