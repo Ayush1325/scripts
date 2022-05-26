@@ -14,19 +14,19 @@ def pretty_block(func):
 
 
 @pretty_block
-def toolbox_run(container_name, commmand):
+def toolbox_run(container_name: str, commmand: list[str]):
     cmd = ["toolbox", "run", "-c", container_name] + commmand
-    subprocess.run(cmd)
+    subprocess.run(cmd).check_returncode()
 
 
 @pretty_block
-def update_container(container_name):
+def update_container(container_name: str):
     print("System Upgrade")
     toolbox_run(container_name, ["sudo", "dnf", "upgrade", "-y"])
 
 
 @pretty_block
-def dnf_configuration(container_name):
+def dnf_configuration(container_name: str):
     print("Dnf Configuration")
     toolbox_run(
         container_name,
@@ -47,7 +47,7 @@ def dnf_configuration(container_name):
 
 
 @pretty_block
-def install_basic_packages(container_name):
+def install_basic_packages(container_name: str):
     print("Install Basic Packages")
     packages = ["fish", "exa", "direnv", "fd-find", "ripgrep"]
     toolbox_run(
@@ -57,16 +57,16 @@ def install_basic_packages(container_name):
 
 
 @pretty_block
-def install_development_packages(container_name):
+def install_development_packages(container_name: str):
     print("Install Development Packages")
     packages = ["neovim", "bat", "gcc", "g++"]
     toolbox_run(container_name, ["sudo", "dnf", "install", "-y"] + packages)
 
 
 @pretty_block
-def create_container(container_name):
+def create_container(container_name: str):
     print("Create Container")
-    subprocess.run(["toolbox", "create", container_name])
+    subprocess.run(["toolbox", "create", container_name]).check_returncode()
 
 
 if __name__ == "__main__":
