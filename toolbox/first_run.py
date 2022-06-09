@@ -79,11 +79,16 @@ if __name__ == "__main__":
     my_parser.add_argument(
         "-d", "--development", action="store_true", help="install development tools"
     )
+    my_parser.add_argument(
+        "-e", "--exists", action="store_true", help="if container already exists"
+    )
+
     args = my_parser.parse_args()
 
     container_name = args.Name
 
-    create_container(container_name)
+    if not args.exists:
+    	create_container(container_name)
     dnf_configuration(container_name)
     update_container(container_name)
     install_basic_packages(container_name)
