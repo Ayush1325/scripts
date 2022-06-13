@@ -7,8 +7,17 @@ scripts = {
     "run-qemu": "./Tianocore/RunQemu.py"
 }
 
+local_bin_path = "/home/ayush/.local/bin"
+
+
+def setup_dir():
+    if not os.path.isdir(local_bin_path):
+        os.mkdir(local_bin_path)
+    
+
 if __name__ == "__main__":
-    tmp = "/home/ayush/.local/bin/tmp"
+    setup_dir()
+    tmp = os.path.join(local_bin_path, "tmp")
     for key, val in scripts.items():
         os.symlink(os.path.abspath(val), tmp)
-        os.rename(tmp, "/home/ayush/.local/bin/" + key)
+        os.rename(tmp, os.path.join(local_bin_path, key))

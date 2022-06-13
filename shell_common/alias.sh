@@ -1,5 +1,5 @@
-alias toolbox-enter="SHELL=/bin/zsh toolbox enter"
 alias package-search="toolbox run sudo dnf search"
+alias .="source"
 
 if test -e /run/.toolboxenv
 then

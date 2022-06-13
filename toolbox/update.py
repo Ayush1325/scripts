@@ -33,20 +33,20 @@ def get_all_containers() -> list[str]:
 
 
 if __name__ == "__main__":
+    containers: list[str] = get_all_containers()
+
     my_parser = argparse.ArgumentParser(
         description="Update Toolbox Containers", prog="toolbox-update"
     )
     my_parser.add_argument(
-        "-c", "--containers", type=str, help="the names of the containers", nargs="+"
-    )
-    my_parser.add_argument(
-        "-a", "--all", action="store_true", help="update all containers"
+        "Containers", type=str, help="the names of the containers", nargs="*", choices=containers + ['all'], default='all'
     )
 
     args = my_parser.parse_args()
 
-    if args.all:
-        containers = get_all_containers()
+    containers_list = args.Containers
+
+    if 'all' in containers_list:
         update_containers(containers)
-    elif args.containers:
-        update_containers(args.containers)
+    else:
+        update_containers(containers_list)
