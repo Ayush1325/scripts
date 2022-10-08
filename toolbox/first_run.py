@@ -49,7 +49,7 @@ def dnf_configuration(container_name: str):
 @pretty_block
 def install_basic_packages(container_name: str):
     print("Install Basic Packages")
-    packages = ["exa", "direnv", "fd-find", "ripgrep", "zsh", "sqlite", "bat"]
+    packages = ["exa", "direnv", "fd-find", "ripgrep", "zsh", "sqlite", "bat", "python"]
     toolbox_run(
         container_name,
         ["sudo", "dnf", "install", "-y"] + packages,
