@@ -110,7 +110,7 @@ def create_startup_file(tempdir: str) -> str:
     startup_file_path = path.join(tempdir, STARTUP_FILE_NAME)
     with open(startup_file_path, "w") as startup_file:
         lines = ["@echo -off", "fs1:",
-                 "echo Starting UEFI Application...", f"{EFI_FILE_NAME} -v --sequential --staticlink"]
+                 "echo Starting UEFI Application...", f"{EFI_FILE_NAME} -v --sequential"]
         startup_file.write("\n".join(lines))
     return startup_file_path
 
