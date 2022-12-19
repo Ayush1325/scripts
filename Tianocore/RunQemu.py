@@ -3,8 +3,11 @@ import argparse
 import subprocess
 import shutil
 import sys
+import logging
 from os import path
 from tempfile import TemporaryDirectory
+from dataclasses import dataclass
+
 
 EFI_FILE_NAME: str = "run.efi"
 STARTUP_FILE_NAME: str = "startup.nsh"
@@ -13,6 +16,23 @@ QEMU_BINARY_NAME: str = "qemu-system-x86_64"
 OVMF_CODE_FILE_NAME: str = "OVMF_CODE.fd"
 OVMF_VARS_FILE_NAME: str = "OVMF_VARS.fd"
 UEFI_SHELL_FILE_NAME: str = "UefiShell.iso"
+DEFAULT_ARCH: str = "X86_64"
+
+
+@dataclass
+class QemuItem:
+    qemu: str
+    ovmf_code: str
+    ovmf_vars: str
+    uefi_shell: str
+
+
+ARCH: dict[str, QemuItem] = {
+    "X86_64": QemuItem("qemu-system-x86_64", "/usr/share/OVMF/OVMF_CODE.fd", 
+                       "/usr/share/OVMF/OVMF_VARS.fd", "/usr/share/OVMF/UefiShell.iso"),
+    "IA32": QemuItem("qemu-system-i386", "/usr/share/edk2/ovmf-ia32/OVMF_CODE.fd",
+                     "/usr/share/edk2/ovmf-ia32/OVMF_VARS.fd", "/usr/share/edk2/ovmf-ia32/UefiShell.iso")
+}
 
 
 def qemu_run(
@@ -58,32 +78,35 @@ def setup_cli():
         help="path to efi file",
     )
     my_parser.add_argument(
+            "-a",
+            "--arch",
+            choices=ARCH.keys(),
+            default="X86_64",
+            help="architecture to test on"
+    )
+    my_parser.add_argument(
         "-c",
         "--code",
         type=str,
         help="path to OVMF Code file",
-        default="/usr/share/OVMF/OVMF_CODE.fd",
     )
     my_parser.add_argument(
         "-v",
         "--vars",
         type=str,
         help="path to OVMF Vars file",
-        default="/usr/share/OVMF/OVMF_VARS.fd",
     )
     my_parser.add_argument(
         "-s",
         "--shell",
         type=str,
         help="path to UefiShell file",
-        default="/usr/share/OVMF/UefiShell.iso",
     )
     my_parser.add_argument(
         "-q",
         "--qemu",
         type=str,
         help="path to qemu executable",
-        default=QEMU_BINARY_NAME
     )
     my_parser.add_argument(
         "-n",
@@ -110,7 +133,7 @@ def create_startup_file(tempdir: str) -> str:
     startup_file_path = path.join(tempdir, STARTUP_FILE_NAME)
     with open(startup_file_path, "w") as startup_file:
         lines = ["@echo -off", "fs1:",
-                 "echo Starting UEFI Application...", f"{EFI_FILE_NAME} -v --sequential"]
+                 "echo Starting UEFI Application...", f"{EFI_FILE_NAME} -v --sequential --batch"]
         startup_file.write("\n".join(lines))
     return startup_file_path
 
@@ -143,16 +166,65 @@ def parse_args() -> tuple[list[str], list[str]]:
         return sys.argv[1:], []
 
 
+def check_dependecies():
+    def check_required_deps(bin: str) -> bool:
+        if not shutil.which(bin):
+            logging.critical(f"command {bin} not found")
+            return False
+        return True
+
+    def check_optional_deps(bin: str):
+        if not shutil.which(bin):
+            logging.warning(f"command {bin} not found")
+
+    def check_optional_files(file: str):
+        if not path.exists(file):
+            logging.warning(f"File {file} not found")
+
+    should_exit: bool = False
+
+    if not check_required_deps("mformat"):
+        should_exit = True
+    if not check_required_deps("mcopy"):
+        should_exit = True
+
+    for val in ARCH.values():
+        check_optional_deps(val.qemu)
+        check_optional_files(val.ovmf_code)
+        check_optional_files(val.ovmf_vars)
+        check_optional_files(val.uefi_shell)
+
+    if should_exit:
+        exit(0)
+
+
 if __name__ == "__main__":
+    check_dependecies()
+
     args, extra_args = parse_args()
     args = setup_cli().parse_args(args)
+
+    qemu = ARCH[args.arch].qemu
+    ovmf_code = ARCH[args.arch].ovmf_code
+    ovmf_vars = ARCH[args.arch].ovmf_vars
+    uefi_shell = ARCH[args.arch].uefi_shell
+
+    # Overrite if supplied
+    if args.qemu:
+        qemu = args.qemu
+    if args.code:
+        ovmf_code = args.code
+    if args.vars:
+        ovmf_vars = args.vars
+    if args.shell:
+        uefi_shell = args.shell
 
     with TemporaryDirectory() as tempdir:
         efi_file = copy_efi_file(tempdir, args.EFI_File)
         startup_file = create_startup_file(tempdir)
         rootfs_img = setup_rootfs(tempdir, efi_file, startup_file)
         ovmf_code_path, ovmf_vars_path, uefi_shell_path = copy_ovmf_files(
-            tempdir, args.code, args.vars, args.shell)
+            tempdir, ovmf_code, ovmf_vars, uefi_shell)
 
-        qemu_run(args.qemu, rootfs_img, ovmf_code_path,
+        qemu_run(qemu, rootfs_img, ovmf_code_path,
                  ovmf_vars_path, uefi_shell_path, args.net, extra_args)
