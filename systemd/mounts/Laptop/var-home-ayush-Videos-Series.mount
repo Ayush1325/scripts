@@ -1,0 +1,11 @@
+[Unit]
+Description=Hardrive Series Mount
+
+[Mount]
+What=/dev/nvme0n1
+Where=/var/home/ayush/Videos/Series
+Type=btrfs
+Options=defaults,rw,nofail,ssd,noatime,compress=zstd:3,space_cache=v2,discard=async,subvol=@media/series
+
+[Install]
+WantedBy=multi-user.target

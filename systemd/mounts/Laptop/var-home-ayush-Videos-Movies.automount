@@ -1,0 +1,8 @@
+[Unit]
+Description=Hardrive Movies Automount
+
+[Automount]
+Where=/var/home/ayush/Videos/Movies
+
+[Install]
+WantedBy=multi-user.target

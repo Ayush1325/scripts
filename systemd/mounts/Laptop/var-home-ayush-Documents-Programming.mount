@@ -1,0 +1,11 @@
+[Unit]
+Description=Hardrive Games Mount
+
+[Mount]
+What=/dev/nvme0n1
+Where=/var/home/ayush/Documents/Programming
+Type=btrfs
+Options=defaults,rw,nofail,ssd,noatime,compress=zstd:3,space_cache=v2,discard=async,subvol=@programming
+
+[Install]
+WantedBy=multi-user.target

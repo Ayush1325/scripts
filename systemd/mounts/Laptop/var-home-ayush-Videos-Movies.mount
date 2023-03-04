@@ -1,0 +1,11 @@
+[Unit]
+Description=Hardrive Movies Mount
+
+[Mount]
+What=/dev/nvme0n1
+Where=/var/home/ayush/Videos/Movies
+Type=btrfs
+Options=defaults,rw,nofail,ssd,noatime,compress=zstd:3,space_cache=v2,discard=async,subvol=@media/movies
+
+[Install]
+WantedBy=multi-user.target

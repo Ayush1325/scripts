@@ -1,0 +1,8 @@
+[Unit]
+Description=Hardrive Games Automount
+
+[Automount]
+Where=/var/home/ayush/Games
+
+[Install]
+WantedBy=multi-user.target
