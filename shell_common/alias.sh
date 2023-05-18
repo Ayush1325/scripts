@@ -14,4 +14,11 @@ then
   alias zola="flatpak-spawn --host flatpak run org.getzola.zola"
 else
   alias zola="flatpak run org.getzola.zola"
+  # alias aws="podman run --rm -it public.ecr.aws/aws-cli/aws-cli kinesis"
+fi
+
+# Use DNF5 if present
+if command -v dnf5 &> /dev/null
+then
+  alias dnf="dnf5"
 fi

@@ -5,6 +5,9 @@ import argparse
 import os
 
 
+DNF_CMD = "dnf5"
+
+
 def pretty_block(func):
     def inner(*args, **kwargs):
         func(*args, **kwargs)
@@ -22,16 +25,12 @@ def toolbox_run(container_name: str, commmand: list[str]):
 @pretty_block
 def update_container(container_name: str):
     print("System Upgrade")
-    toolbox_run(container_name, ["sudo", "dnf", "upgrade", "-y"])
+    toolbox_run(container_name, ["sudo", DNF_CMD, "upgrade", "-y"])
 
 
 @pretty_block
 def dnf_configuration(container_name: str):
     print("Dnf Configuration")
-    toolbox_run(
-        container_name,
-        ["sudo", "sh", "-c", "echo", "deltarpm=true", ">>", "/etc/dnf/dnf.conf"],
-    )
     toolbox_run(
         container_name,
         [
@@ -47,12 +46,20 @@ def dnf_configuration(container_name: str):
 
 
 @pretty_block
+def install_dnf5(container_name: str):
+    toolbox_run(
+        container_name,
+        ["sudo", "dnf", "install", "dnf5", "-y"]
+    )
+
+
+@pretty_block
 def install_basic_packages(container_name: str):
     print("Install Basic Packages")
     packages = ["exa", "direnv", "fd-find", "ripgrep", "zsh", "sqlite", "bat", "python", "wl-clipboard", "zoxide", "gnome-themes-extra"]
     toolbox_run(
         container_name,
-        ["sudo", "dnf", "install", "-y"] + packages,
+        ["sudo", DNF_CMD, "install", "-y"] + packages,
     )
 
 
@@ -60,7 +67,7 @@ def install_basic_packages(container_name: str):
 def install_development_packages(container_name: str):
     print("Install Development Packages")
     packages = ["neovim", "gcc", "g++", "tokei", "pinentry-gnome3"]
-    toolbox_run(container_name, ["sudo", "dnf", "install", "-y"] + packages)
+    toolbox_run(container_name, ["sudo", DNF_CMD, "install", "-y"] + packages)
 
 
 @pretty_block
@@ -89,6 +96,7 @@ if __name__ == "__main__":
 
     if not args.exists:
         create_container(container_name)
+    install_dnf5(container_name)
     dnf_configuration(container_name)
     update_container(container_name)
     install_basic_packages(container_name)

@@ -28,8 +28,8 @@ DEFAULT_ARCH: str = "X86_64"
 DEFAULT_STARTUP_SCRIPT = ["@echo -off", "fs1:",
                           "echo Starting UEFI Application...", EFI_FILE_NAME]
 ARCH: dict[str, QemuItem] = {
-    "X86_64": QemuItem("qemu-system-x86_64", "/usr/share/OVMF/OVMF_CODE.fd",
-                       "/usr/share/OVMF/OVMF_VARS.fd", "/usr/share/OVMF/UefiShell.iso"),
+    "X86_64": QemuItem("qemu-system-x86_64", "/usr/share/edk2/ovmf/OVMF_CODE.fd",
+                       "/usr/share/edk2/ovmf/OVMF_VARS.fd", "/usr/share/edk2/ovmf/UefiShell.iso"),
     "IA32": QemuItem("qemu-system-i386", "/usr/share/edk2/ovmf-ia32/OVMF_CODE.fd",
                      "/usr/share/edk2/ovmf-ia32/OVMF_VARS.fd", "/usr/share/edk2/ovmf-ia32/UefiShell.iso")
 }
@@ -57,7 +57,9 @@ def qemu_run(
         "-device",
         "virtio-rng-pci",
         "-serial",
-        "file:output.txt"
+        "file:output.txt",
+        "-device",
+        "bochs-display"
     ] + extra_args
     if networking:
         command += ["-netdev", "user,id=net0,hostfwd=tcp::12345-:12345",
