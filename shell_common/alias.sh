@@ -5,6 +5,7 @@ alias clean-build="cargo clean && cargo build"
 
 if test -e /run/.toolboxenv
 then
+  eval "$(direnv hook zsh)"
   eval "$(zoxide init zsh)"
   alias ls="exa"
   alias ll="exa -l"
