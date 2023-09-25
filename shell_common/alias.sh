@@ -7,11 +7,11 @@ if test -e /run/.toolboxenv
 then
   eval "$(direnv hook zsh)"
   eval "$(zoxide init zsh)"
-  alias ls="exa"
-  alias ll="exa -l"
-  alias cat="bat"
-  alias cd="z"
-  alias find="fd"
+  # alias ls="exa"
+  # alias ll="exa -l"
+  # alias cat="bat"
+  # alias cd="z"
+  # alias find="fd"
   alias zola="flatpak-spawn --host flatpak run org.getzola.zola"
 else
   alias zola="flatpak run org.getzola.zola"
