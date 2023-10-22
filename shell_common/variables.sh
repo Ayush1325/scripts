@@ -1,5 +1,5 @@
-export EDITOR=nvim
-export VISUAL=nvim
+export EDITOR=/usr/bin/nvim
+export VISUAL=/usr/bin/nvim
 export DENO_INSTALL="/var/home/ayush/.deno"
 
 path+=("$HOME/.local/bin")
