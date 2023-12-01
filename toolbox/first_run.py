@@ -97,7 +97,7 @@ if __name__ == "__main__":
     if not args.exists:
         create_container(container_name)
     install_dnf5(container_name)
-    dnf_configuration(container_name)
+    # dnf_configuration(container_name)
     update_container(container_name)
     install_basic_packages(container_name)
     if args.development:

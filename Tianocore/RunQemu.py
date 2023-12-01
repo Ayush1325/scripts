@@ -70,12 +70,12 @@ def qemu_run(
 
 
 # Crete fat32 rootfs using dd and mtools
-def setup_rootfs(tempdir: str, efi_file: str, startup_file: str) -> str:
+def setup_rootfs(tempdir: str, efi_file: str, startup_file: str, other_files: list[str]) -> str:
     rootfs_img = path.join(tempdir, ROOTFS_IMG_NAME)
     subprocess.run(
         ["dd", "if=/dev/zero", f"of={rootfs_img}", "bs=1M", "count=1024"])
     subprocess.run(["mformat", "-i", rootfs_img, "::"])
-    subprocess.run(["mcopy", "-i", rootfs_img, efi_file, startup_file, "::"])
+    subprocess.run(["mcopy", "-i", rootfs_img, efi_file, startup_file] + other_files + ["::"])
     return rootfs_img
 
 
@@ -94,6 +94,12 @@ def create_startup_file(tempdir: str, startup_script: str) -> str:
 def copy_efi_file(tempdir: str, efi_file: str) -> str:
     efi_file_path = path.join(tempdir, EFI_FILE_NAME)
     shutil.copyfile(efi_file, efi_file_path)
+    return efi_file_path
+
+# Copy other files to tempdir
+def copy_file(tempdir: str, file_path: str) -> str:
+    efi_file_path = path.join(tempdir, path.basename(file_path))
+    shutil.copyfile(file_path, efi_file_path)
     return efi_file_path
 
 
@@ -170,6 +176,12 @@ def setup_cli():
         type=str,
         help="path to startup script",
     )
+    my_parser.add_argument(
+        "--extra-file",
+        type=str,
+        nargs='*',
+        help="any extra files to add"
+    )
 
     return my_parser
 
@@ -212,8 +224,13 @@ if __name__ == "__main__":
 
     with TemporaryDirectory() as tempdir:
         efi_file = copy_efi_file(tempdir, args.EFI_File)
+        extra_files = []
+
+        for f in args.extra_file:
+            extra_files.append(copy_file(tempdir, f))
+
         startup_file = create_startup_file(tempdir, args.startup)
-        rootfs_img = setup_rootfs(tempdir, efi_file, startup_file)
+        rootfs_img = setup_rootfs(tempdir, efi_file, startup_file, extra_files)
         ovmf_code_path, ovmf_vars_path, uefi_shell_path = copy_ovmf_files(
             tempdir, ovmf_code, ovmf_vars, uefi_shell)
         qemu_run(qemu, rootfs_img, ovmf_code_path,
