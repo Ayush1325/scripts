@@ -1,0 +1,8 @@
+[Unit]
+Description=SSD VM
+
+[Automount]
+Where=/var/home/ayush/Virtualization
+
+[Install]
+WantedBy=multi-user.target

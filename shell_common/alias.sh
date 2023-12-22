@@ -5,7 +5,6 @@ alias clean-build="cargo clean && cargo build"
 
 if test -e /run/.toolboxenv
 then
-  eval "$(direnv hook zsh)"
   alias zola="flatpak-spawn --host flatpak run org.getzola.zola"
 else
   alias zola="flatpak run org.getzola.zola"

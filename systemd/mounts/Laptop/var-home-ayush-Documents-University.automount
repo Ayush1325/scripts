@@ -1,0 +1,8 @@
+[Unit]
+Description=Hardrive University Automount
+
+[Automount]
+Where=/var/home/ayush/Documents/University
+
+[Install]
+WantedBy=multi-user.target
