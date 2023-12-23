@@ -1,0 +1,8 @@
+[Unit]
+Description=Hardrive Series Automount
+
+[Automount]
+Where=/var/home/ayush/Videos/Series
+
+[Install]
+WantedBy=multi-user.target
