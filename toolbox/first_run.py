@@ -24,24 +24,6 @@ def update_container(container_name: str):
     print("System Upgrade")
     toolbox_run(container_name, ["sudo", "dnf", "upgrade", "-y"])
 
-
-@pretty_block
-def dnf_configuration(container_name: str):
-    print("Dnf Configuration")
-    toolbox_run(
-        container_name,
-        [
-            "sudo",
-            "sh",
-            "-c",
-            "echo",
-            "max_parallel_downloads=12",
-            ">>",
-            "/etc/dnf/dnf.conf",
-        ],
-    )
-
-
 @pretty_block
 def install_basic_packages(container_name: str):
     print("Install Basic Packages")
@@ -55,7 +37,7 @@ def install_basic_packages(container_name: str):
 @pretty_block
 def install_development_packages(container_name: str):
     print("Install Development Packages")
-    packages = ["neovim", "gcc", "g++", "pinentry-qt"]
+    packages = ["neovim", "gcc", "g++", "pinentry", "nodejs"]
     toolbox_run(container_name, ["sudo", "dnf", "install", "-y"] + packages)
 
 
@@ -85,7 +67,6 @@ if __name__ == "__main__":
 
     if not args.exists:
         create_container(container_name)
-    dnf_configuration(container_name)
     update_container(container_name)
     install_basic_packages(container_name)
     if args.development:
