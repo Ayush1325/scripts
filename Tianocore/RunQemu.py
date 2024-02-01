@@ -226,8 +226,9 @@ if __name__ == "__main__":
         efi_file = copy_efi_file(tempdir, args.EFI_File)
         extra_files = []
 
-        for f in args.extra_file:
-            extra_files.append(copy_file(tempdir, f))
+        if args.extra_file:
+            for f in args.extra_file:
+                extra_files.append(copy_file(tempdir, f))
 
         startup_file = create_startup_file(tempdir, args.startup)
         rootfs_img = setup_rootfs(tempdir, efi_file, startup_file, extra_files)
