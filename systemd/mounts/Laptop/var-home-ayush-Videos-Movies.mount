@@ -2,7 +2,7 @@
 Description=Hardrive Movies Mount
 
 [Mount]
-What=/dev/nvme0n1
+What=/dev/disk/by-uuid/33cfe877-81a9-4aa4-8376-a0b6f62f5c50
 Where=/var/home/ayush/Videos/Movies
 Type=btrfs
 Options=defaults,rw,nofail,ssd,noatime,compress=zstd:3,space_cache=v2,discard=async,subvol=@media/movies
