@@ -1,0 +1,1 @@
+KERNEL=="ttyACM[0-9]", SUBSYSTEM=="tty", MODE="0660", TAG+="uaccess"
