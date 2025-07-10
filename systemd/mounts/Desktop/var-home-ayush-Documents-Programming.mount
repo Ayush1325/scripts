@@ -2,10 +2,10 @@
 Description=Hardrive Programming Mount
 
 [Mount]
-What=/dev/disk/by-uuid/1856b6b3-9b82-4440-b5fc-86562578fd13
+What=/dev/disk/by-uuid/94127302-e784-4f23-8530-54b92f787ee5
 Where=/var/home/ayush/Documents/Programming
 Type=btrfs
-Options=rw,nofail,noatime,compress=zstd:3,nossd,space_cache=v2,subvol=@programming
+Options=defaults,rw,nofail,ssd,noatime,compress=zstd:3,space_cache=v2,discard=async,subvol=@programming
 
 [Install]
 WantedBy=multi-user.target

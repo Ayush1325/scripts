@@ -1,8 +1,0 @@
-[Unit]
-Description=Hardrive Documents-Notes Automount
-
-[Automount]
-Where=/var/home/ayush/Documents/Notes
-
-[Install]
-WantedBy=multi-user.target

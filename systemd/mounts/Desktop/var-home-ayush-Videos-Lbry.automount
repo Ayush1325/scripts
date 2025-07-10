@@ -1,8 +1,0 @@
-[Unit]
-Description=Hardrive Videos-Lbry Automount
-
-[Automount]
-Where=/var/home/ayush/Videos/Lbry
-
-[Install]
-WantedBy=multi-user.target

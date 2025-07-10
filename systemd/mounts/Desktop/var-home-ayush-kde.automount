@@ -1,8 +1,0 @@
-[Unit]
-Description=Hardrive KDE Automount
-
-[Automount]
-Where=/var/home/ayush/kde
-
-[Install]
-WantedBy=multi-user.target

@@ -1,8 +1,0 @@
-[Unit]
-Description=Hardrive Videos-Hollywood Automount
-
-[Automount]
-Where=/var/home/ayush/Videos/Hollywood
-
-[Install]
-WantedBy=multi-user.target

@@ -1,5 +1,5 @@
 [Unit]
-Description=Hardrive Programming Automount
+Description=Hardrive Games Automount
 
 [Automount]
 Where=/var/home/ayush/Documents/Programming
