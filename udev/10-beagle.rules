@@ -1,1 +1,23 @@
-KERNEL=="ttyACM[0-9]", SUBSYSTEM=="tty", MODE="0660", TAG+="uaccess"
+# Copy this file to /etc/udev/rules.d/
+# If rules fail to reload automatically, you can refresh udev rules
+# with the command "udevadm control --reload"
+
+# BeagleConnect Freedom
+SUBSYSTEM=="tty", ATTRS{product}=="BeagleConnect", ATTRS{manufacturer}=="BeagleBoard.org", MODE="0660", TAG+="uaccess"
+
+# BeagleConnect Freedom MSP430
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="2047", ATTRS{idProduct}=="0200", MODE="0660", TAG+="uaccess"
+
+# FTDI
+SUBSYSTEM=="tty", ATTRS{product}=="PocketBeagle2", ATTRS{manufacturer}=="BeagleBoard.org", MODE="0660", TAG+="uaccess"
+
+#TI rules
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0451", ATTRS{idProduct}=="6165", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0451", ATTRS{idProduct}=="6141", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0451", ATTRS{idProduct}=="d022", MODE="0660", TAG+="uaccess"
+
+# Armbian USB Serial
+SUBSYSTEM=="tty", ATTRS{product}=="CDC Composite Gadget", MODE="0660", TAG+="uaccess"
+
+# RPI Probe
+SUBSYSTEM=="tty", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000c", MODE="0660", TAG+="uaccess"
