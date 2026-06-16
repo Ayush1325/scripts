@@ -2,10 +2,10 @@
 Description=Hardrive Movies Mount
 
 [Mount]
-What=/dev/disk/by-uuid/94127302-e784-4f23-8530-54b92f787ee5
+What=/dev/disk/by-uuid/c0df7e10-548d-413f-9d54-fbca1fdb51ae
 Where=/var/home/ayush/Videos/Movies
 Type=btrfs
-Options=defaults,rw,nofail,ssd,noatime,compress=zstd:3,space_cache=v2,discard=async,subvol=@movies
+Options=defaults,rw,nofail,noatime,compress=zstd:3,space_cache=v2,subvol=@movies
 
 [Install]
 WantedBy=multi-user.target

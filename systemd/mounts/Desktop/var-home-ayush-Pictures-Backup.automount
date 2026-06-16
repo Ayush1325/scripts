@@ -1,0 +1,8 @@
+[Unit]
+Description=Hardrive Pictures Backup
+
+[Automount]
+Where=/var/home/ayush/Pictures/Backup
+
+[Install]
+WantedBy=multi-user.target

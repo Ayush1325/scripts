@@ -1,0 +1,11 @@
+[Unit]
+Description=Hardrive Pictures Backup
+
+[Mount]
+What=/dev/disk/by-uuid/c0df7e10-548d-413f-9d54-fbca1fdb51ae
+Where=/var/home/ayush/Pictures/Backup
+Type=btrfs
+Options=defaults,rw,nofail,noatime,compress=zstd:3,space_cache=v2,subvol=@pictures
+
+[Install]
+WantedBy=multi-user.target
